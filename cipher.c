@@ -9,8 +9,8 @@ int  decrypt(FILE *fp, FILE *fp1 ,int shift );
 
 int main(int argc , char *argv[]){
 
-    if(argc <3 ){
-        printf("less number of argument\n");
+    if(argc != 4 ){
+        printf("Less number of argument\n-e\tfor encryption\n-d\tfor decryption\nfilename\nshift\n");
         return 0;
     }
 
@@ -20,7 +20,11 @@ int main(int argc , char *argv[]){
         return 1;
     }
 
-    FILE *fp1 = fopen("./input.enc","w");
+    char encrypt_filename[256];
+    strcpy(encrypt_filename,argv[2]);
+    strcat(encrypt_filename,".enc");
+
+    FILE *fp1 = fopen(encrypt_filename,"w");
 
     if(!fp1){
         perror("fopen");
@@ -35,28 +39,20 @@ int main(int argc , char *argv[]){
         fclose(fp1);
         return 0;
 
-    }
-    if(strcmp(argv[1],"-d" ) == 0){
+    }else if(strcmp(argv[1],"-d" ) == 0){
         decrypt(fp,fp1,shift);
         fclose(fp);
         fclose(fp1);
         return 0;
+    }else{
+        printf("wrong argument did you mean:\n-e\tfor encrypton\n-d\tfor decryption\n");
     }   
     return 0;    
 }
 
 int  encrypt(FILE *fp,FILE *fp1, int shift ){
-
-    fseek(fp , 0 , SEEK_SET);
-    char c;
-
-
+    int c;
     while((c = fgetc(fp))!= EOF){
-
-        if(c == ' ') {
-            fputc( c , fp1);
-            continue;
-        }
 
         if(c >= 'A' && c<= 'Z'){
             int position = c - 'A';
@@ -73,9 +69,9 @@ int  encrypt(FILE *fp,FILE *fp1, int shift ){
         }else{
             fputc(c , fp1);
         }   
-
     }            
     return 0;
+
     }
 
 
