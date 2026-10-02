@@ -33,7 +33,7 @@ int main(int argc , char *argv[]){
     if(strcmp(argv[1] , "-e") == 0){
         strncat(encrypt_filename, ".enc" , 255);
     }else if(strcmp(argv[1] , "-d") == 0){
-        if(encrypt_filename[len-1] == 'c' && encrypt_filename[len-2] == 'n' && encrypt_filename[len-3] == 'e'){
+        if(len>=4 && strcmp(encrypt_filename + len-4 , ".enc") ==0){
            encrypt_filename[len-2] ='e';
            encrypt_filename[len-3] = 'd';
         }else{
@@ -48,7 +48,9 @@ int main(int argc , char *argv[]){
         return 1;
     }
 
-    int shift = atoi(argv[3]);
+    int shift = atoi(argv[3]); /* don't know still how to fix this bug for now if user enter string like
+                               "abc" it tries to convert it to int which result to 0 so everythings happens
+                                to works with 0 shift . this is bug */
 
     if(strcmp(argv[1],"-e" ) == 0){
         encrypt(fp,fp1,shift);
